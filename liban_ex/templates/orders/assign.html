@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% for message in messages %}
+<div class="alert alert-success text-center">
+    <strong>{{ message }}</strong>
+</div>
+{% endfor %}
+
+<style>
+
+table {
+    border-collapse: collapse;
+    width: 50%;
+    margin: 0 auto;
+}
+
+td, th {
+    border: 1px solid black;
+    text-align: center;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+
+</style>
+
+<div class="container-fluid text-center" style="margin-bottom: 100px;">
+    <hr style="height:2px;border:none;color:#333;background-color:#333;" />
+    <h3> Order assignment </h3><br>
+    <form method="get">
+        <select name="zone" class="form-control" required>
+            <option value=""> Select zone to filter by </option>
+            {% for zone in zones %}
+            <option value="{{ zone.zone }}" {% if selected.zone == zone.zone %} selected {% endif %}> {{ zone }} </option>
+            {% endfor %}
+        </select><br>
+        <input type="submit" class="btn btn-primary" value="Filter">
+    </form>
+    <hr style="height:2px;border:none;color:#333;background-color:#333;" />
+    <h3>Assign selected orders to:</h3>
+    <form method="post" name="form" id="form">
+        {% csrf_token %}
+        <select name="driver" class="form-control" required>
+            <option value=""> Select driver </option>
+            {% for driver in drivers %}
+            <option value="{{ driver.id }}"> {{ driver }} </option>
+            {% endfor %}
+        </select><br>
+        <input type="submit" class="btn btn-primary" value="Submit">
+    </form>
+    <hr style="height:2px;border:none;color:#333;background-color:#333;" />
+
+    {% if orders %}
+    <br>
+    <div class='text-center'>
+        <table style="width: 100%;">
+            <tr>
+                <th> Order id </th>
+                <th> Date received </th>
+                <th> Closed date </th>
+                <th> Seller </th>
+                <th> Amount in dollars </th>
+                <th> Amount in lebanese </th>
+                <th> Customer </th>
+                <th> Address </th>
+                <th> Phone number </th>
+                <th> Driver </th>
+                <th> Zone </th>
+                <th> Location </th>
+                <th> Financial status </th>
+                <th> Actual amount </th>
+            </tr>
+            {% for order in orders %}
+            <tr>
+                <th> {{ order.order_id }} </th>
+                <th> {{ order.date_received }} </th>
+                <th> {{ order.closed }} </th>
+                <th> {{ order.seller }} </th>
+                <th> {{ order.amount_dollars }} </th>
+                <th> {{ order.amount_lebanese }} </th>
+                <th> {{ order.customer }} </th>
+                <th> {{ order.address }} </th>
+                <th> {{ order.phone_number }} </th>
+                <th> {{ order.driver }} </th>
+                <th> {{ order.zone }} </th>
+                <th> {{ order.location }} </th>
+                <th> {{ order.financial_status }} </th>
+                <th> {{ order.actual_amount }} </th>
+                <th> <input type="checkbox" name="selected_order" form="form" value="{{ order.id }}" style="width: 15px; height: 15px;"> </th>
+            </tr>
+            {% endfor %}
+        </table>
+
+        {% if orders.has_other_pages %}
+          <ul class="pagination">
+            {% if orders.has_previous %}
+              <li><a href="{{ request.build_absolute_uri }}&page={{ orders.previous_page_number }}">&laquo;</a></li>
+            {% else %}
+              <li class="disabled"><span>&laquo;</span></li>
+            {% endif %}
+            {% for i in orders.paginator.page_range %}
+              {% if orders.number == i %}
+                <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+              {% else %}
+                <li><a href="{{ request.build_absolute_uri }}&page={{ i }}">{{ i }}</a></li>
+              {% endif %}
+            {% endfor %}
+            {% if orders.has_next %}
+              <li><a href="{{ request.build_absolute_uri }}&page={{ orders.next_page_number }}">&raquo;</a></li>
+            {% else %}
+              <li class="disabled"><span>&raquo;</span></li>
+            {% endif %}
+          </ul>
+        {% endif %}
+
+    </div>
+    {% endif %}
+
+</div>
+
+{% endblock %}
