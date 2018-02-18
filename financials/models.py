@@ -1,13 +1,13 @@
 from django.db import models
-from orders.models import Order
 
 # Create your models here.
 
 class Financial(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
     status_choices = (
-        ("Delivered", 'Delivered'),
-        ("Refunded", 'Refunded'),
+        ("Undelivered", 'Undelivered'),
+        ("Delivered with driver", 'Delivered with driver'),
+        ("Delivered with company", 'Delivered with company'),
+        ("Paid to seller", 'Paid to seller'),
     )
     status = models.CharField(max_length=20, choices=status_choices)
     description = models.TextField()
