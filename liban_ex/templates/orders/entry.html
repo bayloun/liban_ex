@@ -7,15 +7,15 @@
     <h4> Please enter date received in form DAY/MONTH/YEAR and then 24 hour time. <br> For example: 24/12/2018 13:30 </h4>
     <form method="post">
         {% csrf_token %}
-        <div class="form-group">
+        <div>
             {% for field in form %}
-                {{ field.label }}:<br>
+                <span>{{ field.label }}:</span><br>
                 {% for error in field.errors %}
                 <div class="alert alert-danger">
                     <strong>{{ error|escape }}</strong>
                 </div>
                 {% endfor %}
-                <div class="form-control">{{ field }}<br></div>
+                <span class="">{{ field }}</span><br>
             {% endfor %}
         </div>
         <input type="submit" class="btn btn-primary" value="Submit">

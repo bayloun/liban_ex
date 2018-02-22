@@ -9,4 +9,4 @@ class Seller(models.Model):
     operations_phone_number = models.CharField(max_length=20)
 
     def __str__(self):
-        return "Business name: " + self.business_name + " Contact name: " + self.contact_name
+        return self.business_name

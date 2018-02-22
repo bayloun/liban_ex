@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+
+table {
+    border-collapse: collapse;
+    width: 50%;
+    margin: 0 auto;
+}
+
+td, th {
+    border: 1px solid black;
+    text-align: center;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+
+}
+
+</style>
+
+<br>
+<div class="container text-center" style="margin-bottom: 100px;">
+    <h3 class="text-center"> Seller Search </h3><br>
+    <form method="post">
+        {% csrf_token %}
+        <select name="seller" class="form-control" style="width: auto; display:inline;" required>
+            <option value=""> Select seller </option>
+            {% for seller in sellers %}
+            <option value="{{ seller.id }}" {% if seller == selected_seller %} selected {% endif %}> {{ seller }} </option>
+            {% endfor %}
+        </select>
+        <select name="location" class="form-control" style="width: auto; display: inline;">
+            <option value=""> Select location </option>
+            {% for location in locations %}
+            <option value="{{ location.id }}" {% if location == selected_location %} selected {% endif %}> {{ location }} </option>
+            {% endfor %}
+        </select><br><br>
+        <input type="submit" class="btn btn-primary" value="Submit">
+    </form>
+
+    {% if orders %}
+    <br>
+    <div class='text-center'>
+        <table style="width: 100%;">
+            <tr>
+                <th> Order id </th>
+                <th> Date received </th>
+                <th> Closed date </th>
+                <th> Seller </th>
+                <th> Amount in dollars </th>
+                <th> Amount in lebanese </th>
+                <th> Customer </th>
+                <th> Address </th>
+                <th> Phone number </th>
+                <th> Driver </th>
+                <th> Zone </th>
+                <th> Location </th>
+                <th> Financial status </th>
+                <th> Actual amount </th>
+            </tr>
+            {% for order in orders %}
+            <tr>
+                <th> {{ order.order_id }} </th>
+                <th> {{ order.date_received }} </th>
+                <th> {{ order.closed }} </th>
+                <th> {{ order.seller }} </th>
+                <th> {{ order.amount_dollars }} </th>
+                <th> {{ order.amount_lebanese }} </th>
+                <th> {{ order.customer }} </th>
+                <th> {{ order.address }} </th>
+                <th> {{ order.phone_number }} </th>
+                <th> {{ order.driver }} </th>
+                <th> {{ order.zone }} </th>
+                <th> {{ order.location }} </th>
+                <th> {{ order.financial_status }} </th>
+                <th> {{ order.actual_amount }} </th>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

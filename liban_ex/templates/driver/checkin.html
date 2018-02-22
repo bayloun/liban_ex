@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+
+table {
+    border-collapse: collapse;
+    width: 50%;
+    margin: 0 auto;
+}
+
+td, th {
+    border: 1px solid black;
+    text-align: center;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+
+}
+
+</style>
+
+<br>
+<div class="container text-center" style="margin-bottom: 100px;">
+    <h3 class="text-center"> Driver Checkin </h3><br>
+    <form method="post">
+        {% csrf_token %}
+        <select name="driver" class="form-control" style="width: auto; display:inline;" required>
+            <option value=""> Select driver </option>
+            {% for driver in drivers %}
+            <option value="{{ driver.id }}" {% if driver == selected_driver %} selected {% endif %}> {{ driver }} </option>
+            {% endfor %}
+        </select><br><br>
+        <input type="submit" class="btn btn-primary" value="Submit">
+    </form>
+
+    {% if orders %}
+    <br>
+    <h4 style="font-weight: bold;"> Total owed by this driver: ${{ total_owed }} </h4>
+    <br>
+    <div class='text-center'>
+        <table style="width: 100%;">
+            <tr>
+                <th> Order id </th>
+                <th> Date received </th>
+                <th> Closed date </th>
+                <th> Seller </th>
+                <th> Amount in dollars </th>
+                <th> Amount in lebanese </th>
+                <th> Driver </th>
+                <th> Zone </th>
+                <th> Location </th>
+                <th> Financial status </th>
+                <th> Actual amount USD</th>
+                <th> Actual amount LBP</th>
+            </tr>
+            {% for order in orders %}
+            <tr>
+                <th> {{ order.order_id }} </th>
+                <th> {{ order.date_received }} </th>
+                <th> {{ order.closed }} </th>
+                <th> {{ order.seller }} </th>
+                <th> {{ order.amount_dollars }} </th>
+                <th> {{ order.amount_lebanese }} </th>
+                <th> {{ order.driver }} </th>
+                <th> {{ order.zone }} </th>
+                <th> {{ order.location }} </th>
+                <th>
+                    <select name="status{{ forloop.counter }}" class="form-control" style="width: auto;">
+                        {% for status in statuses %}
+                        <option {% if status == order.financial_status %} selected {% endif %} value="{{ status.id }}"> {{ status }} </option>
+                        {% endfor %}
+                    </select>
+                </th>
+                <th> {{ order.actual_amount_dollars }} </th>
+                <th> {{ order.actual_amount_lebanese }} </th>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

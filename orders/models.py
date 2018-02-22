@@ -13,14 +13,15 @@ class Order(models.Model):
     seller = models.ForeignKey(Seller, on_delete=models.CASCADE)
     amount_dollars = models.FloatField()
     amount_lebanese = models.FloatField()
-    customer = models.CharField(max_length=100)
-    address = models.CharField(max_length=500)
+    customer = models.TextField(max_length=100)
+    address = models.TextField(max_length=500)
     phone_number = models.CharField(max_length=100)
     driver = models.ForeignKey(Driver, on_delete=models.CASCADE, null=True, blank=True)
     zone = models.ForeignKey(Zone, on_delete=models.CASCADE)
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
     financial_status = models.ForeignKey(Financial, on_delete=models.CASCADE)
-    actual_amount = models.FloatField(null=True, blank=True)
+    actual_amount_usd = models.FloatField(null=True, blank=True)
+    actual_amount_lebanese = models.FloatField(null=True, blank=True)
 
     class Meta:
         ordering = ['order_id']
