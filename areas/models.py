@@ -10,7 +10,7 @@ class Location(models.Model):
         ordering = ['location']
 
     def __str__(self):
-        return self.location + " " + self.description
+        return self.location
 
 class Zone(models.Model):
     zone = models.CharField(max_length=100, unique=True)

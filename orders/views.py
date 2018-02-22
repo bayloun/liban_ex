@@ -5,6 +5,9 @@ from orders.models import Order
 from driver.models import Driver
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib import messages
+from financials.models import Financial
+from areas.models import Location
+from django.http import HttpResponse
 
 # Create your views here.
 
@@ -13,6 +16,7 @@ def entry(request):
     if request.method == 'POST':
         if form.is_valid():
             form.save()
+            messages.add_message(request, messages.SUCCESS, 'Order successfully created.')
     return render(request, 'orders/entry.html', {'form': form})
 
 def assign(request):
@@ -48,3 +52,13 @@ def assign(request):
             return redirect("/order/assign")
 
     return render(request, 'orders/assign.html', {"orders": orders, "zones": zones, "drivers": drivers, "selected": zone})
+
+
+def update(request):
+    order = Order.objects.get(id=request.POST["order_id"])
+    location = Location.objects.get(id=request.POST["location"])
+    order.location = location
+    order.actual_usd = float(request.POST["actual_dollars"])
+    order.actual_lebanese = float(request.POST["actual_lebanese"])
+    order.save()
+    return HttpResponse('success')

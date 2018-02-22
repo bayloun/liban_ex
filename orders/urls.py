@@ -6,4 +6,5 @@ app_name = 'orders'
 urlpatterns = [
     path('entry', views.entry),
     path('assign', views.assign),
+    path('update', views.update),
 ]

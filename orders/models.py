@@ -20,8 +20,8 @@ class Order(models.Model):
     zone = models.ForeignKey(Zone, on_delete=models.CASCADE)
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
     financial_status = models.ForeignKey(Financial, on_delete=models.CASCADE)
-    actual_amount_usd = models.FloatField(null=True, blank=True)
-    actual_amount_lebanese = models.FloatField(null=True, blank=True)
+    actual_usd = models.FloatField(null=True, blank=True)
+    actual_lebanese = models.FloatField(null=True, blank=True)
 
     class Meta:
         ordering = ['order_id']

@@ -67,20 +67,47 @@ tr:nth-child(even) {
                 <th> {{ order.amount_lebanese }} </th>
                 <th> {{ order.driver }} </th>
                 <th> {{ order.zone }} </th>
-                <th> {{ order.location }} </th>
+                <form method="post" id="update">
+                    {% csrf_token %}
                 <th>
-                    <select name="status{{ forloop.counter }}" class="form-control" style="width: auto;">
-                        {% for status in statuses %}
-                        <option {% if status == order.financial_status %} selected {% endif %} value="{{ status.id }}"> {{ status }} </option>
+                    <select name="location" class="form-control" style="width: auto;" id="location{{ forloop.counter }}">
+                        {% for location in locations %}
+                        <option {% if location == order.location %} selected {% endif %} value="{{ location.id }}"> {{ location }} </option>
                         {% endfor %}
                     </select>
                 </th>
-                <th> {{ order.actual_amount_dollars }} </th>
-                <th> {{ order.actual_amount_lebanese }} </th>
+                <th> {{ order.financial_status }} </th>
+                <th> <input type="text" name="actual_dollars" class="form-control" value="{% if order.actual_usd %}{{ order.actual_usd }}{% else %}{{ order.amount_dollars }}{% endif %}" id="actual_dollars{{ forloop.counter }}"> </th>
+                <th> <input type="text" name="actual_lebanese" class="form-control" value="{% if order.actual_lebanese %}{{ order.actual_lebanese }}{% else %}{{ order.amount_lebanese }}{% endif %}" id="actual_lebanese{{ forloop.counter }}"> </th>
+                    <input type="hidden" name="order_id" value="{{ order.id }}" id="order_id{{ forloop.counter  }}">
+                <th> <button class="btn btn-primary" id="{{ forloop.counter }}" onclick="update({{ forloop.counter }});"> Save </button> </th>
+                </form>
             </tr>
             {% endfor %}
         </table>
     </div>
     {% endif %}
 </div>
+
+{% endblock %}
+
+{% block footer_js %}
+
+<script>
+function update(id){
+    event.preventDefault();
+    $.post("/order/update",
+    {
+        csrfmiddlewaretoken: "{{ csrf_token }}",
+        location: $("#location"+id).val(),
+        actual_dollars: $("#actual_dollars"+id).val(),
+        actual_lebanese: $("#actual_lebanese"+id).val(),
+        order_id: $("#order_id"+id).val(),
+    });
+    $("#"+id).css("background-color", "green");
+    $("#"+id).text("Saved");
+}
+
+</script>
+
 {% endblock %}
