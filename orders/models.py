@@ -13,7 +13,7 @@ class Order(models.Model):
     seller = models.ForeignKey(Seller, on_delete=models.CASCADE)
     amount_dollars = models.FloatField()
     amount_lebanese = models.FloatField()
-    customer = models.TextField(max_length=100)
+    customer = models.CharField(max_length=100)
     address = models.TextField(max_length=500)
     phone_number = models.CharField(max_length=100)
     driver = models.ForeignKey(Driver, on_delete=models.CASCADE, null=True, blank=True)

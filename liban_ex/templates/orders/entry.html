@@ -1,22 +1,30 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% for message in messages %}
+<div class="alert alert-success text-center">
+    <strong>{{ message }}</strong>
+</div>
+{% endfor %}
 <br>
 <div class="container" style="margin-bottom: 100px;">
     <h3 class="text-center"> Order Entry </h3>
-    <h4> Please enter date received in form DAY/MONTH/YEAR and then 24 hour time. <br> For example: 24/12/2018 13:30 </h4>
     <form method="post">
         {% csrf_token %}
         <div>
+            <br>
             {% for field in form %}
-                <span>{{ field.label }}:</span><br>
+            {% if field.label != "Address" %}
+                <span>{{ field.label }}:</span>
                 {% for error in field.errors %}
                 <div class="alert alert-danger">
                     <strong>{{ error|escape }}</strong>
                 </div>
                 {% endfor %}
-                <span class="">{{ field }}</span><br>
+                <span class="">{{ field }}</span>{% if forloop.counter|divisibleby:4 %}<br><br>{% endif %}
+            {% endif %}
             {% endfor %}
+            {{ form.address.label }}:<br> {{ form.address }}<br>
         </div>
         <input type="submit" class="btn btn-primary" value="Submit">
     </form>
@@ -33,5 +41,20 @@
         var x = parseFloat($("#id_amount_lebanese").val()) / 1500;
         $("#id_amount_dollars").val(x);
     });
+
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth()+1; //January is 0!
+
+    var yyyy = today.getFullYear();
+    if(dd<10){
+        dd='0'+dd;
+    }
+    if(mm<10){
+        mm='0'+mm;
+    }
+    var today = yyyy+'-'+mm+'-'+dd;
+    document.getElementById("id_date_received").value = today;
+
 </script>
 {% endblock %}

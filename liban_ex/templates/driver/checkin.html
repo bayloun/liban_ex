@@ -60,7 +60,7 @@ tr:nth-child(even) {
             {% for order in orders %}
             <tr>
                 <th> {{ order.order_id }} </th>
-                <th> {{ order.date_received }} </th>
+                <th> {{ order.date_received.date }} </th>
                 <th> {{ order.closed }} </th>
                 <th> {{ order.seller }} </th>
                 <th> {{ order.amount_dollars }} </th>

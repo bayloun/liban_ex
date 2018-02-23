@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% for message in messages %}
+<div class="alert alert-success text-center">
+    <strong>{{ message }}</strong>
+</div>
+{% endfor %}
+
+<style>
+
+.form-control {
+    width: auto;
+    display: inline;
+}
+
+table {
+    border-collapse: collapse;
+    width: 50%;
+    margin: 0 auto;
+}
+
+td, th {
+    border: 1px solid black;
+    text-align: center;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+
+}
+
+</style>
+
+<br>
+<div class="container" style="margin-bottom: 100px;">
+    <h3 class="text-center"> Order Search </h3>
+    <br>
+
+    <h4> Search for order number: </h4>
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" required name="number" placeholder="Order number" class="form-control">
+        <input type="submit" class="btn btn-primary" value="Submit">
+    </form><br><br>
+
+    <h4> Filter by: </h4>
+    <form method="get">
+        <select name="seller" class="form-control">
+            <option value=""> Seller </option>
+            {% for seller in sellers %}
+            <option value="{{ seller.id }}" {% if selected_seller == seller %} selected {% endif %}> {{ seller }} </option>
+            {% endfor %}
+        </select>
+        <select name="zone" class="form-control">
+            <option value=""> Zone </option>
+            {% for zone in zones %}
+            <option value="{{ zone.id }}" {% if selected_zone == zone %} selected {% endif %}> {{ zone }} </option>
+            {% endfor %}
+        </select>
+        <select name="location" class="form-control">
+            <option value=""> Location </option>
+            {% for location in locations %}
+            <option value="{{ location.id }}" {% if selected_location == location %} selected {% endif %}> {{ location }} </option>
+            {% endfor %}
+        </select>
+        <select name="financial" class="form-control">
+            <option value=""> Financial Status </option>
+            {% for financial in financials %}
+            <option value="{{ financial.id }}" {% if selected_financial == financial %} selected {% endif %}> {{ financial }} </option>
+            {% endfor %}
+        </select>
+        <input type="submit" class="btn btn-primary" value="Submit">
+    </form>
+    {% if orders %}
+    <br>
+    <br>
+    <div class='text-center'>
+        <table style="width: 100%;">
+            <tr>
+                <th> Order id </th>
+                <th> Date received </th>
+                <th> Closed date </th>
+                <th> Seller </th>
+                <th> Amount in dollars </th>
+                <th> Amount in lebanese </th>
+                <th> Driver </th>
+                <th> Zone </th>
+                <th> Location </th>
+                <th> Financial status </th>
+                <th> Actual amount USD</th>
+                <th> Actual amount LBP</th>
+            </tr>
+            {% for order in orders %}
+            <tr>
+                <th> {{ order.order_id }} </th>
+                <th> {{ order.date_received.date }} </th>
+                <th> {{ order.closed }} </th>
+                <th> {{ order.seller }} </th>
+                <th> {{ order.amount_dollars }} </th>
+                <th> {{ order.amount_lebanese }} </th>
+                <th> {{ order.driver }} </th>
+                <th> {{ order.zone }} </th>
+                <th> {{ order.location }} </th>
+                <th> {{ order.financial_status }} </th>
+                <th> {{ order.actual_usd }} </th>
+                <th> {{ order.actual_lebanese }} </th>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    {% else %}
+    <br>
+    <h3> No results found. </h3>
+    {% endif %}
+</div>
+
+{% endblock %}
+
+{% block footer_js %}
+{% endblock %}

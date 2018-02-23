@@ -5,4 +5,4 @@ class OrderForm(forms.ModelForm):
 
     class Meta:
         model = Order
-        exclude = ('closed', 'actual_amount')
+        exclude = ('closed', 'actual_lebanese', 'actual_usd')
