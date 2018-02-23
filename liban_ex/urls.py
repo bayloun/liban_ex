@@ -17,9 +17,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('login/', auth_views.login, name='login'),
+    path('logout/', auth_views.logout, {'next_page': '/'}, name='logout'),
     path('', TemplateView.as_view(template_name="base.html")),
     path('order/', include('orders.urls')),
     path('driver/', include('driver.urls')),

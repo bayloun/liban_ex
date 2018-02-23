@@ -2,9 +2,11 @@ from django.shortcuts import render
 from areas.models import Location
 from seller.models import Seller
 from orders.models import Order
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
+@login_required
 def search(request):
     sellers = Seller.objects.all()
     locations = Location.objects.all()

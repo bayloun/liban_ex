@@ -10,9 +10,11 @@ from financials.models import Financial
 from areas.models import Location
 from django.http import HttpResponse
 from django.utils import timezone
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
+@login_required
 def entry(request):
     form = OrderForm(request.POST or None)
     if request.method == 'POST':
@@ -23,6 +25,7 @@ def entry(request):
             order.save()
     return render(request, 'orders/entry.html', {'form': form})
 
+@login_required
 def assign(request):
     zones = Zone.objects.all()
     drivers = Driver.objects.all()
@@ -57,7 +60,7 @@ def assign(request):
 
     return render(request, 'orders/assign.html', {"orders": orders, "zones": zones, "drivers": drivers, "selected": zone})
 
-
+@login_required
 def update(request):
     order = Order.objects.get(id=request.POST["order_id"])
     location = Location.objects.get(id=request.POST["location"])
@@ -67,7 +70,7 @@ def update(request):
     order.save()
     return HttpResponse('success')
 
-
+@login_required
 def search(request):
     seller = request.GET.get("seller", False)
     zone = request.GET.get("zone", False)

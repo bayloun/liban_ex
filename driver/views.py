@@ -3,9 +3,11 @@ from driver.models import Driver
 from orders.models import Order
 from financials.models import Financial
 from areas.models import Location
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
+@login_required
 def checkin(request):
     orders = None
     selected_driver = None
